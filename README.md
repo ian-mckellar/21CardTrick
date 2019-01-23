@@ -4,9 +4,9 @@ Alex: GUI
 
 Ian: Card, Deck
 
-Tenzin:
+Tenzin: Player
 
-Carson: Dealer, Player
+Carson: Dealer
 
 Jason:
 
