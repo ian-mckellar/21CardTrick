@@ -2,11 +2,11 @@
 
 Alex: GUI
 
-Ian: 
+Ian: Card, Deck
 
 Tenzin:
 
-Carson: Dealer, Deck
+Carson: Dealer, Player
 
 Jason:
 
