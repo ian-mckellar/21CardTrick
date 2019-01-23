@@ -1,12 +1,12 @@
 # 21CardTrick
 
-Alex: GUI
+Alex: GUI (Board)
 
-Ian: 
+Ian: Card, Deck
 
-Tenzin:
+Tenzin: Player
 
-Carson: Dealer, Deck
+Carson: Dealer
 
 Jason:
 
