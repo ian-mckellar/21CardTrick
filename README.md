@@ -1,6 +1,6 @@
 # 21CardTrick
 
-Alex: GUI
+Alex: GUI (Board)
 
 Ian: Card, Deck
 
