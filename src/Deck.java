@@ -4,8 +4,8 @@ import java.util.Collections;
 public class Deck {
     private ArrayList<Card> deck = new ArrayList<Card>();
     private ArrayList<Card> gameCards = new ArrayList<Card>();
-    private static final String[] suit = {"Hearts", "Diamonds", "Spades", "Clovers"}; 
-    private static final String[] face = {"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"};
+    private static final String[] suit = {"Hearts", "Diamonds", "Spades", "Clubs"}; 
+    private static final String[] face = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
 
     public Deck() {
         for (int i = 0; i < 4; i++) {
@@ -20,13 +20,22 @@ public class Deck {
 
     public void Shuffle() {
     	Collections.shuffle(deck);
+    	Collections.shuffle(gameCards);
     }
 
     public void Random21() {
-    	gameCards = new ArrayList<Card>(deck.subList(0, 20));
+    	setGameCards(new ArrayList<Card>(deck.subList(0, 21)));
     }
     
     public Card GetCard(int index) {
-    	return deck.get(index);
+    	return gameCards.get(index);
     }
+
+	public ArrayList<Card> getGameCards() {
+		return gameCards;
+	}
+
+	public void setGameCards(ArrayList<Card> gameCards) {
+		this.gameCards = gameCards;
+	}
 }

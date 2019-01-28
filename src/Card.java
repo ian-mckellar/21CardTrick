@@ -22,5 +22,10 @@ public class Card {
 	public void setFace(String face) {
 		this.face = face;
 	}
+	
+	@Override
+	public String toString() {
+		return face + " of " + suit;
+	}
     
 }
