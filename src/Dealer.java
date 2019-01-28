@@ -17,6 +17,14 @@ public class Dealer {
     }
 
     public void PickupCards() {
-        
+        deck.Shuffle();
+    }
+    
+    public Deck GetDeck() {
+    	return deck;
+    }
+    
+    public void SetDeck(Deck deck) {
+    	this.deck = deck;
     }
 }
