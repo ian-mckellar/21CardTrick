@@ -1,0 +1,536 @@
+//Game21 class - Main Class that will run Game21 game 
+
+//Import statements
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.io.*;
+//import sun.audio.*;
+
+public class Game21 extends JFrame {
+
+	//Screen Sizes
+	int screenWidth = 1300;
+	int screenHeight = 650;
+
+	//Pain boolean
+	private boolean paintBool = false;
+
+	//Images
+	private ImageIcon streetMagicImage = new ImageIcon(getClass().getResource("Images/streetMagic.png"));
+	private Image streetMagicBackGround = streetMagicImage.getImage();
+
+	private ImageIcon redImage = new ImageIcon(getClass().getResource("Images/redBackGround.png"));
+	private Image redBackGround = redImage.getImage();
+
+	//Card to hold selected card
+	private JLabel selectedCard = null;
+	private String selectedCardName = "";
+
+	//Card border for when selected 
+	private Border selectedBorder = BorderFactory.createLineBorder(Color.YELLOW, 1);
+
+	//String for commands
+	String command = "Select a Card";
+
+	//Vars to aid in random number generation
+	private Random randomNum;
+	private long RandomeSeed;
+
+	//Labels
+	JLabel r1c1 = new JLabel(); 
+	JLabel r1c2 = new JLabel(); 
+	JLabel r1c3 = new JLabel(); 
+	JLabel r1c4 = new JLabel(); 
+	JLabel r1c5 = new JLabel(); 
+	JLabel r1c6 = new JLabel(); 
+	JLabel r1c7 = new JLabel(); 
+
+	JLabel r2c1 = new JLabel(); 
+	JLabel r2c2 = new JLabel(); 
+	JLabel r2c3 = new JLabel(); 
+	JLabel r2c4 = new JLabel(); 
+	JLabel r2c5 = new JLabel(); 
+	JLabel r2c6 = new JLabel(); 
+	JLabel r2c7 = new JLabel(); 
+
+	JLabel r3c1 = new JLabel(); 
+	JLabel r3c2 = new JLabel(); 
+	JLabel r3c3 = new JLabel(); 
+	JLabel r3c4 = new JLabel(); 
+	JLabel r3c5 = new JLabel(); 
+	JLabel r3c6 = new JLabel(); 
+	JLabel r3c7 = new JLabel(); 
+
+	JLabel commandLbl = new JLabel(); 	
+	
+	//Default constructor
+	public Game21() {
+		
+		//Closing the program
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+		//Program Title
+		setTitle("Game 21 Trick");
+
+		//Add new board (including deck) to JFrame
+		add(new Game21Board());
+
+		//Set Size a visibility of board
+		setBackground(Color.black);
+		setSize(screenWidth, screenHeight);
+		//setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		//setUndecorated(true);
+		setVisible(true);        	
+		setLayout(null);
+
+	}
+
+	//Method to start game
+		public void startGame() {
+
+			System.out.println("Here");
+
+		}
+
+
+	//Game21Board Class - Constructs the Game21Board Board implements the ability of mounse clicks
+	public class Game21Board extends JPanel implements MouseListener {
+
+		//Default constructor
+		public Game21Board() {
+
+			//New random
+			randomNum = new Random();
+
+			//Method call to set up menu
+			menu();
+
+		}
+
+		//Menu Method - Menu for additional game controls  
+		private void menu() {
+			
+			JMenuBar menuBar = new JMenuBar();
+			setJMenuBar(menuBar);
+			JMenu gameMenu = new JMenu("Game");
+			menuBar.add(gameMenu);
+			
+			Action playAction = new AbstractAction("New Game") {
+
+				public void actionPerformed(ActionEvent e) {
+					startGame();
+				}
+			};
+
+			JMenuItem newGame = new JMenuItem(playAction);
+			gameMenu.add(newGame);
+			
+/*
+			JMenu soundMenu = new JMenu("Sound");
+			menuBar.add(soundMenu);
+			
+			Action onAction = new AbstractAction("On") {
+
+				public void actionPerformed(ActionEvent e) {
+					//soundOn();
+				}
+			};
+
+			Action offAction = new AbstractAction("Off") {
+				public void actionPerformed(ActionEvent e) {
+					//soundOff();
+				}
+			};
+			
+			JMenuItem soundOn = new JMenuItem(onAction);
+			JMenuItem soundOff = new JMenuItem(offAction);
+			soundMenu.add(soundOn);
+			soundMenu.addSeparator();
+			soundMenu.add(soundOff);
+			
+			JMenu helpMenu = new JMenu("Help");
+			menuBar.add(helpMenu);
+			
+
+			Action rulesAction = new AbstractAction("Game Rules") {
+
+				public void actionPerformed(ActionEvent e) {
+					
+					//JOptionPane.showMessageDialog(null, "Rules", "Game Rules", JOptionPane.INFORMATION_MESSAGE);
+
+				}
+			};
+			
+			JMenuItem rules = new JMenuItem(rulesAction);
+			helpMenu.add(rules);
+*/
+		}
+
+		//Method to Paint background 
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+
+			if (paintBool == false) { //Launch Screen
+            	
+            	g.setColor(Color.BLACK);
+            	g.fillRect(0, 0, getWidth(), getHeight()); 
+
+				g.drawImage(streetMagicBackGround, (this.getWidth() - streetMagicBackGround.getWidth(this)) / 2,
+					(this.getHeight() - streetMagicBackGround.getHeight(this)) / 2, this);
+			
+
+			} else { //GameField
+
+				g.drawImage(redBackGround, 0,
+					0, this);
+
+			}
+
+		}
+
+		public void startGame() {
+
+			//Set border layout
+			setLayout(new BorderLayout());
+
+			//Generate new random
+			RandomeSeed = System.currentTimeMillis() % 10000;
+			randomNum.setSeed(RandomeSeed);
+
+			//Call a new game
+			//Game game = new Game(); 
+			//game.newGame(randomNum);
+
+			buildGameField();
+
+		}
+
+		public void buildGameField() {
+
+			//Set border layout
+			setLayout(new BorderLayout());
+
+			//Repaint game Field 
+        	paintBool = true; 
+        	
+        	repaint();
+
+        	//Row 1 Column 1
+        	r1c1.setBounds(50, 20, 85, 135);
+        	r1c1.setIcon(resizeImage("backOfDeckBlack"));
+        	r1c1.addMouseListener(this);
+        	r1c1.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r1c1);
+
+        	//Row 1 Column 2
+        	r1c2.setBounds(200, 20, 85, 135);
+        	r1c2.setIcon(resizeImage("backOfDeckBlack"));
+        	r1c2.addMouseListener(this);
+        	r1c2.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r1c2);
+
+        	//Row 1 Column 3
+        	r1c3.setBounds(350, 20, 85, 135);
+        	r1c3.setIcon(resizeImage("backOfDeckBlack"));
+        	r1c3.addMouseListener(this);
+        	r1c3.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r1c3);
+
+        	//Row 1 Column 4
+        	r1c4.setBounds(500, 20, 85, 135);
+        	r1c4.setIcon(resizeImage("backOfDeckBlack"));
+        	r1c4.addMouseListener(this);
+        	r1c4.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r1c4);
+
+        	//Row 1 Column 5
+        	r1c5.setBounds(650, 20, 85, 135);
+        	r1c5.setIcon(resizeImage("backOfDeckBlack"));
+        	r1c5.addMouseListener(this);
+        	r1c5.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r1c5);
+
+        	//Row 1 Column 6
+        	r1c6.setBounds(800, 20, 85, 135);
+        	r1c6.setIcon(resizeImage("backOfDeckBlack"));
+        	r1c6.addMouseListener(this);
+        	r1c6.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r1c6);
+
+        	//Row 1 Column 7
+        	r1c7.setBounds(950, 20, 85, 135);
+        	r1c7.setIcon(resizeImage("backOfDeckBlack"));
+        	r1c7.addMouseListener(this);
+        	r1c7.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r1c7);
+
+        	//Row 2 Column 1
+        	r2c1.setBounds(50, 220, 85, 135);
+        	r2c1.setIcon(resizeImage("backOfDeckBlack"));
+        	r2c1.addMouseListener(this);
+        	r2c1.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r2c1);
+
+        	//Row 2 Column 2
+        	r2c2.setBounds(200, 220, 85, 135);
+        	r2c2.setIcon(resizeImage("backOfDeckBlack"));
+        	r2c2.addMouseListener(this);
+        	r2c2.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r2c2);
+
+        	//Row 2 Column 3
+        	r2c3.setBounds(350, 220, 85, 135);
+        	r2c3.setIcon(resizeImage("backOfDeckBlack"));
+        	r2c3.addMouseListener(this);
+        	r2c3.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r2c3);
+
+        	//Row 2 Column 4
+        	r2c4.setBounds(500, 220, 85, 135);
+        	r2c4.setIcon(resizeImage("backOfDeckBlack"));
+        	r2c4.addMouseListener(this);
+        	r2c4.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r2c4);
+
+        	//Row 2 Column 5
+        	r2c5.setBounds(650, 220, 85, 135);
+        	r2c5.setIcon(resizeImage("backOfDeckBlack"));
+        	r2c5.addMouseListener(this);
+        	r2c5.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r2c5);
+
+        	//Row 2 Column 6
+        	r2c6.setBounds(800, 220, 85, 135);
+        	r2c6.setIcon(resizeImage("backOfDeckBlack"));
+        	r2c6.addMouseListener(this);
+        	r2c6.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r2c6);
+
+        	//Row 2 Column 7
+        	r2c7.setBounds(950, 220, 85, 135);
+        	r2c7.setIcon(resizeImage("backOfDeckBlack"));
+        	r2c7.addMouseListener(this);
+        	r2c7.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r2c7);
+
+			//Row 3 Column 1
+        	r3c1.setBounds(50, 420, 85, 135);
+        	r3c1.setIcon(resizeImage("backOfDeckBlack"));
+        	r3c1.addMouseListener(this);
+        	r3c1.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r3c1);
+
+        	//Row 3 Column 2
+        	r3c2.setBounds(200, 420, 85, 135);
+        	r3c2.setIcon(resizeImage("backOfDeckBlack"));
+        	r3c2.addMouseListener(this);
+        	r3c2.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r3c2);
+
+        	//Row 3 Column 3
+        	r3c3.setBounds(350, 420, 85, 135);
+        	r3c3.setIcon(resizeImage("backOfDeckBlack"));
+        	r3c3.addMouseListener(this);
+        	r3c3.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r3c3);
+
+        	//Row 3 Column 4
+        	r3c4.setBounds(500, 420, 85, 135);
+        	r3c4.setIcon(resizeImage("backOfDeckBlack"));
+        	r3c4.addMouseListener(this);
+        	r3c4.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r3c4);
+
+        	//Row 3 Column 5
+        	r3c5.setBounds(650, 420, 85, 135);
+        	r3c5.setIcon(resizeImage("backOfDeckBlack"));
+        	r3c5.addMouseListener(this);
+        	r3c5.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r3c5);
+
+        	//Row 3 Column 6
+        	r3c6.setBounds(800, 420, 85, 135);
+        	r3c6.setIcon(resizeImage("backOfDeckBlack"));
+        	r3c6.addMouseListener(this);
+        	r3c6.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r3c6);
+
+        	//Row 3 Column 7
+        	r3c7.setBounds(950, 420, 85, 135);
+        	r3c7.setIcon(resizeImage("backOfDeckBlack"));
+        	r3c7.addMouseListener(this);
+        	r3c7.setHorizontalAlignment(SwingConstants.CENTER);
+        	add(r3c7);
+
+        	commandLbl.setText(command);
+			commandLbl.setBounds(1055, 50, 200, 50);
+			commandLbl.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 15));
+			commandLbl.setForeground(Color.WHITE);
+        	commandLbl.setHorizontalAlignment(SwingConstants.CENTER);
+        	commandLbl.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
+			add(commandLbl);        	
+
+        	JButton oneBtn = new JButton("Row 1");
+			oneBtn.setBounds(1100, 240, 100, 40);
+			oneBtn.addActionListener(new ActionListener() {
+  				public void actionPerformed(ActionEvent e) {
+    			
+  					//JFrame frame = new JFrame("Advisory");
+        			//frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+  					//System.out.println("Testing: 1234");
+
+    				/*
+  					if() {
+  					
+
+  					}
+
+  					//Call statusUpdate()
+  					statusUpdate(game.getGameStatus());
+
+  					revalidate();
+  					validate();
+  					repaint();
+  				}*/
+  				}
+				});
+        	add(oneBtn);
+
+        	JButton twoBtn = new JButton("Row 2");
+			twoBtn.setBounds(1100, 300, 100, 40);
+			twoBtn.addActionListener(new ActionListener() {
+  				public void actionPerformed(ActionEvent e) {
+    			
+  					//JFrame frame = new JFrame("Advisory");
+        			//frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+  					//System.out.println("Testing: 1234");
+
+    				/*
+  					if() {
+  					
+
+  					}
+
+  					//Call statusUpdate()
+  					statusUpdate(game.getGameStatus());
+
+  					revalidate();
+  					validate();
+  					repaint();
+  				}*/
+  				}
+				});
+        	add(twoBtn);
+
+        	JButton threeBtn = new JButton("Row 3");
+			threeBtn.setBounds(1100, 360, 100, 40);
+			threeBtn.addActionListener(new ActionListener() {
+  				public void actionPerformed(ActionEvent e) {
+    			
+  					//JFrame frame = new JFrame("Advisory");
+        			//frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+  					//System.out.println("Testing: 1234");
+
+    				/*
+  					if() {
+  					
+
+  					}
+
+  					//Call statusUpdate()
+  					statusUpdate(game.getGameStatus());
+
+  					revalidate();
+  					validate();
+  					repaint();
+  				}*/
+  				}
+				});
+        	add(threeBtn);
+
+        	JLabel testLbl = new JLabel(); 
+        	testLbl.setBounds(1299, 420, 1, 1);
+        	add(testLbl);
+		}
+
+
+		//Mouse pressed events 
+		@Override
+		public void mousePressed(MouseEvent e) {
+			
+			//System.out.println("Clicked");	
+
+			//TODO: Select any one cade during the select card phase
+			JLabel label = (JLabel) e.getSource();
+
+			if (selectedCard == null) {
+
+				selectedCard = label;
+				selectedCard.setBorder(selectedBorder);
+				//TODO: Get selectedCard name as string assign it to selectedCardName
+			} else {
+				selectedCard.setBorder(null);
+				selectedCard = label;
+				selectedCard.setBorder(selectedBorder);
+				//TODO: Get selectedCard name as string assign it to selectedCardName
+			}
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
+
+	}
+	
+	//Resize cards to correct size
+ 	public ImageIcon resizeImage(String imageName) {
+
+ 			ImageIcon card1ImageIcon = new ImageIcon(getClass().getResource("Images/" + imageName + ".png"));
+			Image card1Image = card1ImageIcon.getImage();
+			Image scaledImg = card1Image.getScaledInstance(75, 125,  java.awt.Image.SCALE_SMOOTH); 
+			card1ImageIcon = new ImageIcon(scaledImg); 
+
+			return card1ImageIcon;
+ 	}
+
+	public static void main(String[] args) throws Exception {
+		new Game21();
+
+
+	}
+}
