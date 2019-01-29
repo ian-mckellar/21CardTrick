@@ -1,11 +1,11 @@
 public class Player {
-    private boolean hasSelectedCard;
+	//private boolean hasSelectedCard;
 
-    public void indicateColumn() {
+	public void indicateColumn() {
 
-    }
+	}
 
-    public void pickCard() {
-        
-    }
+	public void pickCard() {
+
+	}
 }

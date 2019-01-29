@@ -1,16 +1,22 @@
 public class Card {
-	
-	// Fields for card info
-    private String suit;
-    private String face;
-    
-    // Default Constructor for a new cards
-    public Card (String suit, String face) {
-    	this.setSuit(suit);
-    	this.setFace(face);
-    }
 
-    // Return the card's suit
+	// Fields for card info
+	private String suit;
+	private String face;
+
+	// Default Constructor for a new cards
+	public Card(String suit, String face) {
+		this.setSuit(suit);
+		this.setFace(face);
+	}
+	
+	// Constructor with no parameters
+	public Card() {
+		suit = "";
+		face = "";
+	}
+
+	// Return the card's suit
 	public String getSuit() {
 		return suit;
 	}
@@ -29,11 +35,11 @@ public class Card {
 	public void setFace(String face) {
 		this.face = face;
 	}
-	
+
 	// Override the toString method to return it in a specific manner
 	@Override
 	public String toString() {
 		return face + " of " + suit;
 	}
-    
+
 }
