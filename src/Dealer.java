@@ -1,30 +1,30 @@
 public class Dealer {
-    private int dealNumber;
+	
+	// Deck that holds 
     private Deck deck;
 
+    // Default constructor for Dealer class
     public Dealer() {
         deck = new Deck();
-        dealNumber = 0;
-    }
-
-    public void Deal() {
-        dealNumber++;
-        
-    }
-
-    public void RevealCard() {
-        
-    }
-
-    public void PickupCards() {
-        deck.Shuffle();
     }
     
-    public Deck GetDeck() {
+    // Reveals the card at the end of the game
+    public void revealCard() {
+        
+    }
+
+    // Pick up the cards from the deck
+    public void PickupCards(int i) {
+    	deck.pickUpCards(i);
+    }
+    
+    // Get the deck the Dealer has
+    public Deck getDeck() {
     	return deck;
     }
     
-    public void SetDeck(Deck deck) {
+    // Set the dealer's deck to the parameter
+    public void setDeck(Deck deck) {
     	this.deck = deck;
     }
 }

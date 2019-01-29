@@ -4,28 +4,22 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.*; 
 //import sun.audio.*;
 
 public class Game21 extends JFrame {
 
 	// Screen Sizes
 	int screenWidth = 800;
-	int screenHeight = 820;
+	int screenHeight = 700;
 
 	// Paint boolean
 	private boolean paintBool = false;
-
-	// Boolean for card selection
-	private boolean cardSelected = false;
 
 	// Hold Column choice values
 	private ArrayList<Column> columnChoices = new ArrayList<Column>();
@@ -37,12 +31,6 @@ public class Game21 extends JFrame {
 	private ImageIcon redImage = new ImageIcon(getClass().getResource("Images/redBackGround.png"));
 	private Image redBackGround = redImage.getImage();
 
-	// Card to hold selected card
-	private JLabel selectedCard = null;
-
-	// Card border for when selected
-	private static final Border selectedBorder = BorderFactory.createLineBorder(Color.YELLOW, 1);
-
 	// Vars to aid in random number generation
 	private Random randomNum;
 	private long RandomeSeed;
@@ -51,9 +39,11 @@ public class Game21 extends JFrame {
 	ArrayList<JLabel> jLabels = new ArrayList<JLabel>();
 	ArrayList<Column> columns;
 
+	// Command button/labels to hold the instructions for the game 
 	JLabel commandLbl = new JLabel();
 	String command = "Select a Card";
 	
+	// Dealer to run various methods and hold values
 	Dealer dealer = new Dealer();
 
 	// Default constructor
@@ -69,30 +59,25 @@ public class Game21 extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		// Program Title
-		setTitle("Game 21 Trick");
+		setTitle("Game 21 Magic Trick");
 
 		// Add new board (including deck) to JFrame
 		add(new Game21Board());
 
 		// Set Size a visibility of board
-		setBackground(Color.black);
+		setBackground(Color.BLACK);
 		setSize(screenWidth, screenHeight);
 		setVisible(true);
 		setLayout(null);
 
 	}
 
-	// Method to start game
-	public void startGame() {
-		System.out.println("Here");
-	}
-
-	// Game21Board Class - Constructs the Game21Board Board implements the ability of mouse clicks
+	// Game21Board Class - Constructs the Game21Board Board implements the ability
+	// of mouse clicks
 	public class Game21Board extends JPanel {
-
+		
 		// Default constructor
 		public Game21Board() {
-
 			// New random
 			randomNum = new Random();
 
@@ -102,14 +87,14 @@ public class Game21 extends JFrame {
 
 		// Menu Method - Menu for additional game controls
 		private void menu() {
-
 			JMenuBar menuBar = new JMenuBar();
+			menuBar.setBackground(new Color(150, 150, 150));
+			menuBar.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 150), 1));
 			setJMenuBar(menuBar);
 			JMenu gameMenu = new JMenu("Game");
 			menuBar.add(gameMenu);
 
 			Action playAction = new AbstractAction("New Game") {
-
 				public void actionPerformed(ActionEvent e) {
 					startGame();
 				}
@@ -153,7 +138,7 @@ public class Game21 extends JFrame {
 			super.paintComponent(g);
 
 			if (paintBool == false) { // Launch Screen
-
+				this.setBackground(Color.BLACK);
 				g.setColor(Color.BLACK);
 				g.fillRect(0, 0, getWidth(), getHeight());
 
@@ -164,64 +149,73 @@ public class Game21 extends JFrame {
 				g.drawImage(redBackGround, 0, 0, this);
 			}
 		}
-
+		
+		// Start a game on 'New Game' pressed		
 		public void startGame() {
 
 			// Set border layout
 			setLayout(new BorderLayout());
 
 			// Generate new random
+			//////// Do we need this?
 			RandomeSeed = System.currentTimeMillis() % 10000;
 			randomNum.setSeed(RandomeSeed);
-
-			DealDeck();
+			
+			// Get the deck and deal it out
+			dealDeck();
 			columnChoices.clear();
 		}
-
-		public void Deal() {
+		
+		// Adds UI components
+		public void deal() {
 
 			// Repaint game Field
 			paintBool = true;
 			repaint();
-
-			int x = 46;
-			for (Column column : columns) {
-				int y = 650;
-				for (Card card : column.getCards()) {
+				
+			// Add the cards to the window
+			int x = 50;
+			for (int i = 0; i < 3; i++) {
+				int y = 450;
+				for (int j = 6; j >= 0; j--) {
+					Card card = columns.get(i).getCards().get(j);
 					JLabel label = new JLabel();
 					label.setName(card.getFace() + "_of_" + card.getSuit());
-					y -= 79;
-					label.setBounds(x, y, 75, 125);
 					label.setIcon(resizeImage((card.getFace() + "_of_" + card.getSuit()).toLowerCase()));
 					label.setOpaque(true);
 					label.setBackground(Color.WHITE);
 					label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 					label.setHorizontalAlignment(SwingConstants.CENTER);
 					label.setToolTipText(card.getFace() + " of " + card.getSuit());
+					label.setBounds(x, y, 89, 125);
 					add(label);
 					jLabels.add(label);
+					y -= 64;
 				}
-				x += 150;
+				x += 144;
 			}
-
-			commandLbl.setText("<html>Think of a card displayed and choose a column</html>");
-			commandLbl.setBounds(525, 100, 200, 50);
+			
+			// Create the top left instruction/command label
+			commandLbl.setText("<html>Think of a card displayed and choose the column it's in</html>");
+			commandLbl.setBounds(500, 100, 275, 40);
 			commandLbl.setFont(new Font("Copperplate Gothic Bold", Font.PLAIN, 15));
 			commandLbl.setForeground(Color.WHITE);
 			commandLbl.setHorizontalAlignment(SwingConstants.CENTER);
-			commandLbl.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
+			commandLbl.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
 			add(commandLbl);
 			
+			// Add the 3 buttons for each column
 			for (int i = 1; i < 4; i++) {
 				JButton btn = new JButton("Column " + i);
-				btn.setBounds(545, 240 + (60 * (i -1)), 100, 40);
+				btn.setBounds(545, 240 + (60 * (i - 1)), 100, 40);
 				int j = i;
 				btn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						ColumnSelected(j);
+						ColumnSelected(j - 1);
 					}
 				});
-				add(btn);				
+				btn.setBackground(new Color(224, 224, 224));
+				add(btn);
 			}
 			
 			JLabel testLbl = new JLabel();
@@ -229,27 +223,41 @@ public class Game21 extends JFrame {
 			add(testLbl);
 		}
 		
-		private void DealDeck() {
+		// Deal the deck to the board
+		private void dealDeck() {
+			// Create new columns to hold the cards every round
 			columns = new ArrayList<Column>();
-			//dealer = new Dealer();
-			dealer.PickupCards();
-			dealer.Deal();
 			for (int i = 0; i < 3; i++) {
-				Column col = new Column(i);
-				for (int j = 0; j < 7; j++) {
-					col.addCard(dealer.GetDeck().GetCard(j + (i * 7)));
-				}
-				columns.add(col);
+				columns.add(new Column());
 			}
-			Deal(); // deal to each JLabel
+			
+			// Add cards to the columns
+			int x = 0;
+			ArrayList<Card> temp = new ArrayList<Card>();
+			for (int j = 0; j < 7; j++) {
+				for (int i = 0; i < 3; i++) {
+					columns.get(i).addCard(dealer.getDeck().getCard(x));
+					x++;
+				}
+			}
+			
+			// Set the game cards equal to the new deck.
+			for (Column col : columns) {
+				for (Card card : col.getCards()) {
+					temp.add(card);
+				}
+			}
+			dealer.getDeck().setGameCards(temp);
+			deal();
 			return;
 		}
-		
+
+		// Run on a column button being selected
 		private void ColumnSelected(int i) {
-			columnChoices.add(columns.get(i - 1));
-			for (JLabel label : jLabels) 
-				remove(label);			
-			
+			columnChoices.add(columns.get(i));
+			for (JLabel label : jLabels)
+				remove(label);
+
 			if (columnChoices.size() > 3)
 				return;
 			if (columnChoices.size() == 3) {
@@ -273,13 +281,14 @@ public class Game21 extends JFrame {
 				listOfSet.get(0).retainAll(listOfSet.get(1));
 				for (Card card : listOfSet.get(0))
 					System.out.print(card.getFace() + card.getSuit());
-				listOfSet.get(0).retainAll(listOfSet.get(2));				
-				
+				listOfSet.get(0).retainAll(listOfSet.get(2));
+
 				JOptionPane.showMessageDialog(this, "This is your card: " + listOfSet.get(0).toString());
 				return;
 			}
-			
-			DealDeck();
+
+			dealer.PickupCards(i);
+			dealDeck();
 			revalidate();
 			repaint();
 		}
@@ -290,14 +299,14 @@ public class Game21 extends JFrame {
 
 		ImageIcon card1ImageIcon = new ImageIcon(getClass().getResource("Images/" + imageName + ".png"));
 		Image card1Image = card1ImageIcon.getImage();
-		Image scaledImg = card1Image.getScaledInstance(75, 125, java.awt.Image.SCALE_SMOOTH);
+		Image scaledImg = card1Image.getScaledInstance(89, 125, java.awt.Image.SCALE_SMOOTH);
 		card1ImageIcon = new ImageIcon(scaledImg);
 
 		return card1ImageIcon;
 	}
-
+	
+	// Runs the game initially
 	public static void main(String[] args) throws Exception {
 		new Game21();
-
 	}
 }
