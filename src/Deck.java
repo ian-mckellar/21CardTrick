@@ -7,7 +7,7 @@ public class Deck {
 
 	// 21 Cards to be used in game
 	private ArrayList<Card> gameCards = new ArrayList<Card>();
-	
+
 	// Boolean to prevent grabbing 21 from the deck again
 	private boolean twentyOneGrabbed = false;
 

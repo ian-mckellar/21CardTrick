@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.util.*;
 import javax.swing.*;
-//import sun.audio.*;
 
 public class Board extends JFrame {
 
@@ -25,14 +24,14 @@ public class Board extends JFrame {
 	private ArrayList<Column> columnChoices = new ArrayList<Column>();
 
 	// Images
-	private ImageIcon streetMagicImage = new ImageIcon(getClass().getResource("Images/streetMagic.png"));
-	private Image streetMagicBackGround = streetMagicImage.getImage();
+	private final ImageIcon streetMagicImage = new ImageIcon(getClass().getResource("Images/streetMagic.png"));
+	private final Image streetMagicBackGround = streetMagicImage.getImage();
 
-	private ImageIcon redImage = new ImageIcon(getClass().getResource("Images/redBackGround.png"));
-	private Image redBackGround = redImage.getImage();
-	
-	private ImageIcon bannerImage = new ImageIcon(getClass().getResource("Images/Banner.png"));
-	private Image banner = bannerImage.getImage();
+	private final ImageIcon redImage = new ImageIcon(getClass().getResource("Images/redBackGround.png"));
+	private final Image redBackGround = redImage.getImage();
+
+	private final ImageIcon bannerImage = new ImageIcon(getClass().getResource("Images/Banner.png"));
+	private final Image banner = bannerImage.getImage();
 
 	// Labels
 	ArrayList<JLabel> jLabels = new ArrayList<JLabel>();
@@ -41,9 +40,8 @@ public class Board extends JFrame {
 	// Command button/labels to hold the instructions for the game
 	JLabel commandLbl = new JLabel();
 	String command = "";
-	
-	// Button to start new game
-	//JButton startNewGameBtn = new JButton("Start New Game");
+
+	// Hold column buttons
 	ArrayList<JButton> listOfBtns = new ArrayList<JButton>();
 
 	// Dealer to run various methods and hold values
@@ -71,14 +69,15 @@ public class Board extends JFrame {
 		setBackground(Color.BLACK);
 		setSize(screenWidth, screenHeight);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+
 		setVisible(true);
 		setLayout(null);
 	}
 
 	// Game21Board Class - Constructs the Game21Board Board implements the ability
 	// of mouse clicks
-	public class Game21Board extends JPanel {
+	public class Game21Board extends JPanel implements ActionListener {
 
 		// Default constructor
 		public Game21Board() {
@@ -103,35 +102,6 @@ public class Board extends JFrame {
 
 			JMenuItem newGame = new JMenuItem(playAction);
 			gameMenu.add(newGame);
-
-			/*
-			 * JMenu soundMenu = new JMenu("Sound"); menuBar.add(soundMenu);
-			 * 
-			 * Action onAction = new AbstractAction("On") {
-			 * 
-			 * public void actionPerformed(ActionEvent e) { //soundOn(); } };
-			 * 
-			 * Action offAction = new AbstractAction("Off") { public void
-			 * actionPerformed(ActionEvent e) { //soundOff(); } };
-			 * 
-			 * JMenuItem soundOn = new JMenuItem(onAction); JMenuItem soundOff = new
-			 * JMenuItem(offAction); soundMenu.add(soundOn); soundMenu.addSeparator();
-			 * soundMenu.add(soundOff);
-			 * 
-			 * JMenu helpMenu = new JMenu("Help"); menuBar.add(helpMenu);
-			 * 
-			 * 
-			 * Action rulesAction = new AbstractAction("Game Rules") {
-			 * 
-			 * public void actionPerformed(ActionEvent e) {
-			 * 
-			 * //JOptionPane.showMessageDialog(null, "Rules", "Game Rules",
-			 * JOptionPane.INFORMATION_MESSAGE);
-			 * 
-			 * } };
-			 * 
-			 * JMenuItem rules = new JMenuItem(rulesAction); helpMenu.add(rules);
-			 */
 		}
 
 		// Method to Paint background
@@ -146,18 +116,6 @@ public class Board extends JFrame {
 				g.drawImage(streetMagicBackGround, (this.getWidth() - streetMagicBackGround.getWidth(this)) / 2,
 						(this.getHeight() - streetMagicBackGround.getHeight(this)) / 2, this);
 				g.drawImage(banner, 20, 40, 750, 85, this);
-				
-//				startNewGameBtn.setBounds((this.getWidth() - 150) / 2,
-//						550, 150, 50);
-//				startNewGameBtn.addActionListener(new ActionListener() {
-//					public void actionPerformed(ActionEvent e) {
-//						startGame();
-//					}
-//				});
-//				startNewGameBtn.setBackground(new Color(192, 0, 0));
-//				startNewGameBtn.setBorder(null);
-//				add(startNewGameBtn);
-
 			} else { // GameField
 				g.drawImage(redBackGround, 0, 0, this);
 			}
@@ -165,8 +123,6 @@ public class Board extends JFrame {
 
 		// Start a game on 'New Game' pressed
 		public void startGame() {
-			
-//			startNewGameBtn.setVisible(false);
 			// Set border layout
 			setLayout(new BorderLayout());
 			dealer = new Dealer();
@@ -241,23 +197,23 @@ public class Board extends JFrame {
 		private void dealDeck() {
 			// Create new columns to hold the cards every round
 			columns = new ArrayList<Column>();
-			for (int i = 0; i < 3; i++) 
-				columns.add(new Column());			
+			for (int i = 0; i < 3; i++)
+				columns.add(new Column());
 
 			// Add cards to the columns
 			int x = 0;
 			ArrayList<Card> temp = new ArrayList<Card>();
-			for (int j = 0; j < 7; j++) 
+			for (int j = 0; j < 7; j++)
 				for (int i = 0; i < 3; i++) {
 					columns.get(i).addCard(dealer.getDeck().getCard(x));
 					x++;
 				}
-							
+
 			// Set the game cards equal to the new deck.
-			for (Column col : columns) 
-				for (Card card : col.getCards()) 
+			for (Column col : columns)
+				for (Card card : col.getCards())
 					temp.add(card);
-				
+
 			dealer.getDeck().setGameCards(temp);
 			deal();
 			return;
@@ -272,19 +228,17 @@ public class Board extends JFrame {
 			// If something went wrong
 			if (columnChoices.size() > 3)
 				return;
-			
+
 			// If it's the third choice
-			if (columnChoices.size() == 3) {				
+			if (columnChoices.size() == 3) {
 				dealer.revealCard(columnChoices);
-//				startNewGameBtn.setBounds(555, 550, 150, 50);
-//				startNewGameBtn.setVisible(true);
 				command = "<html>The game has finished! Start a new game or close the window.</html>";
 				commandLbl.setText(command);
 				for (JButton btn : listOfBtns)
 					btn.setEnabled(false);
 				return;
 			}
-			
+
 			// Only run on first and second column choices
 			command = "<html>Choose the column your card is in</html>";
 			commandLbl.setText(command);
@@ -292,6 +246,10 @@ public class Board extends JFrame {
 			dealDeck();
 			revalidate();
 			repaint();
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			startGame();
 		}
 	}
 
@@ -308,6 +266,7 @@ public class Board extends JFrame {
 
 	// Runs the game initially
 	public static void main(String[] args) throws Exception {
+
 		new Board();
 	}
 }

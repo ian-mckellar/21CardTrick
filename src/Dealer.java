@@ -33,9 +33,9 @@ public class Dealer {
 
 		listOfSet.get(0).retainAll(listOfSet.get(1));
 		listOfSet.get(0).retainAll(listOfSet.get(2));
-		
+
 		Card card = new Card();
-		
+
 		try {
 			card = new ArrayList<Card>(listOfSet.get(0)).get(0);
 		} catch (Exception e) {
@@ -46,7 +46,8 @@ public class Dealer {
 
 		UIManager.put("OptionPane.background", new ColorUIResource(255, 255, 255));
 		UIManager.put("Panel.background", new ColorUIResource(255, 255, 255));
-		JOptionPane.showMessageDialog(null, "Your card is the " + card.getFace() + " of " + card.getSuit(), null, 0, icon);
+		JOptionPane.showMessageDialog(null, "Your card is the " + card.getFace() + " of " + card.getSuit(), null, 0,
+				icon);
 		return;
 	}
 

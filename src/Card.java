@@ -9,7 +9,7 @@ public class Card {
 		this.setSuit(suit);
 		this.setFace(face);
 	}
-	
+
 	// Constructor with no parameters
 	public Card() {
 		suit = "";
