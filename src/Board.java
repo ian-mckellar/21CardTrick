@@ -43,11 +43,11 @@ public class Board extends JFrame {
 	String command = "";
 	
 	// Button to start new game
-	JButton startNewGameBtn = new JButton("Start New Game");
+	//JButton startNewGameBtn = new JButton("Start New Game");
 	ArrayList<JButton> listOfBtns = new ArrayList<JButton>();
 
 	// Dealer to run various methods and hold values
-	Dealer dealer = new Dealer();
+	Dealer dealer;
 
 	// Default constructor
 	public Board() {
@@ -147,16 +147,16 @@ public class Board extends JFrame {
 						(this.getHeight() - streetMagicBackGround.getHeight(this)) / 2, this);
 				g.drawImage(banner, 20, 40, 750, 85, this);
 				
-				startNewGameBtn.setBounds((this.getWidth() - 150) / 2,
-						550, 150, 50);
-				startNewGameBtn.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						startGame();
-					}
-				});
-				startNewGameBtn.setBackground(new Color(192, 0, 0));
-				startNewGameBtn.setBorder(null);
-				add(startNewGameBtn);
+//				startNewGameBtn.setBounds((this.getWidth() - 150) / 2,
+//						550, 150, 50);
+//				startNewGameBtn.addActionListener(new ActionListener() {
+//					public void actionPerformed(ActionEvent e) {
+//						startGame();
+//					}
+//				});
+//				startNewGameBtn.setBackground(new Color(192, 0, 0));
+//				startNewGameBtn.setBorder(null);
+//				add(startNewGameBtn);
 
 			} else { // GameField
 				g.drawImage(redBackGround, 0, 0, this);
@@ -166,7 +166,7 @@ public class Board extends JFrame {
 		// Start a game on 'New Game' pressed
 		public void startGame() {
 			
-			startNewGameBtn.setVisible(false);
+//			startNewGameBtn.setVisible(false);
 			// Set border layout
 			setLayout(new BorderLayout());
 			dealer = new Dealer();
@@ -242,8 +242,7 @@ public class Board extends JFrame {
 			// Create new columns to hold the cards every round
 			columns = new ArrayList<Column>();
 			for (int i = 0; i < 3; i++) 
-				columns.add(new Column());
-			
+				columns.add(new Column());			
 
 			// Add cards to the columns
 			int x = 0;
@@ -270,19 +269,23 @@ public class Board extends JFrame {
 			for (JLabel label : jLabels)
 				remove(label);
 
+			// If something went wrong
 			if (columnChoices.size() > 3)
 				return;
+			
+			// If it's the third choice
 			if (columnChoices.size() == 3) {				
 				dealer.revealCard(columnChoices);
-				startNewGameBtn.setBounds(555, 550, 150, 50);
-				startNewGameBtn.setVisible(true);
+//				startNewGameBtn.setBounds(555, 550, 150, 50);
+//				startNewGameBtn.setVisible(true);
 				command = "<html>The game has finished! Start a new game or close the window.</html>";
 				commandLbl.setText(command);
 				for (JButton btn : listOfBtns)
 					btn.setEnabled(false);
 				return;
 			}
-
+			
+			// Only run on first and second column choices
 			command = "<html>Choose the column your card is in</html>";
 			commandLbl.setText(command);
 			dealer.PickupCards(i);

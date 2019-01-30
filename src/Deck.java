@@ -7,6 +7,9 @@ public class Deck {
 
 	// 21 Cards to be used in game
 	private ArrayList<Card> gameCards = new ArrayList<Card>();
+	
+	// Boolean to prevent grabbing 21 from the deck again
+	private boolean twentyOneGrabbed = false;
 
 	// Arrays to hold constants of card info and info for shuffling the game cards
 	private static final String[] suit = { "Hearts", "Diamonds", "Spades", "Clubs" };
@@ -61,7 +64,10 @@ public class Deck {
 
 	// Grab the first 21 cards from the deck and set the Game Cards equal to it
 	public void random21() {
+		if (twentyOneGrabbed)
+			return;
 		setGameCards(new ArrayList<Card>(deck.subList(0, 21)));
+		twentyOneGrabbed = true;
 	}
 
 	// Get a specific card from the deck
